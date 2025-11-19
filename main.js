@@ -325,6 +325,13 @@ $(".unit-wrapper").hover(
     $(this).find("ul.dropdown").addClass("hidden");
   }
 ); 
+$(document).on("click", function (e) {
+  // If the click is NOT inside the unit-wrapper OR the dropdown
+  if (!$(e.target).closest(".unit-wrapper").length &&
+      !$(e.target).closest("ul.dropdown").length) {
+    $("ul.dropdown").addClass("hidden");
+  }
+});
 
 
 unitText.addEventListener("click", function() {
