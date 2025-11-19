@@ -66,7 +66,7 @@ I still want to learn more on using the async function and the jquery library
 
 ## Author
 
-- Website - github.com/horleyoung
+- Website - https://github.com/horleyoung
 - Frontend Mentor - (https://www.frontendmentor.io/profile/horleyoung)
 - Twitter - (https://x.com/Horley_blaq)
 
