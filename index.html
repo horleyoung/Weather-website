@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Frontend Mentor | Weather app</title>
+</head>
+<body class="m-0 p-0 box-border bg-[hsl(243,96%,9%)] text-white">
+  <div class="container mx-auto p-4 md:p-0">
+    <header class="flex justify-between items-center py-3 px-1 md:py-4 md:px-10">
+      <div><img src="./assets/images/logo.svg" alt="logo" class="w-48"></div>
+      <div class="unit-wrapper relative inline-block">
+        <button class="unit w-24 md:w-26  h-10 p-2 bg-[hsl(243,23%,24%)] flex items-center justify-between rounded-lg hover:cursor-pointer">
+          <img src="./assets/images/icon-units.svg" alt="">  Units <img src="./assets/images/icon-dropdown.svg" alt="icon-dropdown">
+        </button>   
+      <!--dropdown -->
+      <ul class="dropdown hidden absolute top-full right-1 bg-[hsl(243,23%,24%)] w-55 flex flex-col  rounded-lg p-2 gap-2 z-10">
+          <li class="title block">
+            <h4 class="unit-text pb-2 hover:bg-[hsl(243,27%,30%)] hover:w-full p-1 hover:rounded-md hover:outline outline-offset-2">Switch to imperial</h4>
+            <p class="text-sm p-1 text-[hsl(240,6%,70%)] pb-1">Temperature</p>
+            <h4 class="celsius-unit pb-1 p-1">Celsius (°C)</h4>
+            <h4 class="fahrenheit pb-1 p-1">Fahrenheit (°F)</h4>
+          </li>
+          <hr class="border-t-2 border-[hsl(243,23%,30%)]">
+          <li class="speed">
+            <p class="wind-speed text-sm p-1 text-[hsl(240,6%,70%)] pb-1">Wind Speed</p>
+            <h4 class="kilometre pb-1 hover:bg-[hsl(243,27%,30%)]">km/h</h4>
+            <h4 class="miles pb-1 p-1">mph</h4>
+          </li>
+          <hr class="border-t-2 border-[hsl(243,23%,30%)]">
+          <li class="metres">
+            <p class="text-sm p-1 text-[hsl(240,6%,70%)] pb-1">Precipitation</p>
+            <h4 class="Millimeters pb-1 p-1 ">Millimeters (mm)</h4>
+            <h4 class="inches pb-1 p-1">Inches (in)</h4>
+          </li>
+      </ul>
+      </div>
+    </header> 
+    <section>
+      <div class="sky-container">
+        <h1 class="mt-6 mx-auto w-full text-5xl md:text-5xl text-center">How's the sky looking today?</h1>
+        <div class="search-container flex flex-col md:flex-row justify-center items-center gap-3 mt-6 md:mt-8">
+          <div class="search-box w-full md:w-96"><input type="search" name="" id="" class="w-full md:w-96 p-3 pl-12  bg-[#292944] rounded-lg bg-[url(./assets/images/icon-search.svg)] bg-no-repeat bg-position-[center_left_1rem] hover:cursor-pointer" placeholder="Search for a place..."></div>
+          <div class="small-search w-full md:w-32 p-3  bg-[#292944] rounded-lg text-center bg-[hsl(233,67%,56%)] hover:bg-[hsl(248,70%,36%)] hover:cursor-pointer">Search</div>
+        </div>
+      </div>
+      <!-- dropdown -->
+      <ul class="absolute top-70 md:top-60 lg:top-59 left-14 md:left-55 lg:left-93 search-dropdown md:w-96 w-82 bg-[hsl(243,27%,20%)] rounded-lg p-2 mt-2 mx-auto flex flex-col gap-4 z-15 hidden">
+        <li class="hover:w-full hover:bg-[hsl(243,23%,30%)] p-0.5 hover:rounded-md pl-2">City Name</li>
+        <li class="hover:w-full hover:bg-[hsl(243,23%,30%)] p-0.5 hover:rounded-md pl-2">City Name</li>
+        <li class="hover:w-full hover:bg-[hsl(243,23%,30%)] p-0.5 hover:rounded-md pl-2">City Name</li>
+        <li class="hover:w-full hover:bg-[hsl(243,23%,30%)] p-0.5 hover:rounded-md pl-2">City Name</li>
+      </ul>
+      <div class="error text-center pt-4 hidden"> 
+        <p>No search result found!</p>
+      </div>
+      <!-- search in progress -->
+       <div class="progress-bar w-82 md:w-96 p-2 bg-[#292944] rounded-lg  mx-93 absolute top-70 md:top-58 -left-75 md:-left-1 flex justify-start items-center gap-3 hidden">
+        <img src="./assets/images/icon-loading.svg" alt="icon-loading">
+          <p>Search in progress</p>
+       </div>
+    </section>
+      <!-- api error state -->
+        <div class="api-error hidden mx-auto flex flex-col items-center justify-center gap-2 w-[28rem]">
+          <img src="./assets/images/icon-error.svg" alt="error" class="w-16">
+          <h1 class="pt-4 text-4xl">Something went wrong</h1>
+          <p class="text-[hsl(240,6%,70%)] text-center">We couldn't connect to the server(API error), please try again in a few moments</p>
+          <button class="retry-btn bg-[hsl(243,23%,30%)] flex items-center justify-center gap-2 rounded-lg px-4 py-2">
+            <img src="./assets/images/icon-retry.svg" alt="retry">
+            <span>Retry</span>
+          </button>
+          </div> 
+    <!-- body section -->
+    <main class="weather-section mt-5 md:mt-10 flex flex-col lg:flex-row items-center justify-center lg:justify-center lg:items-start lg:gap-15 ">
+      <!-- first section -->
+      <section class="day-forecast flex flex-col gap-3  w-full lg:w-1/2">
+        <div class="today-weather relative w-full h-64 md:h-66 p-3 md:p-7  rounded-3xl md:rounded-2xl">
+          <img src="./assets/images/bg-today-small.svg" alt=""class="md:hidden absolute top-0 left-0 w-full h-full object-cover z-0 rounded-3xl">
+          <img src="./assets/images/bg-today-large.svg" alt="" class="absolute top-0 left-0 hidden md:block w-full h-full object-cover z-0 rounded-2xl">
+          <div class="w-full absolute top-10 left-0 flex flex-col justify-start items-center lg:flex-row lg:justify-between lg:items-center lg:gap-20 lg:p-5 z-10">
+            <div class="text-center md:text-left">
+            <h2  class="text-3xl mt-2 city">Berlin, Germany</h2>
+            <p class="date text-[hsl(250,6%,84%)] text-sm md:text-md mt-2">Tuesday, Oct 5, 2025</p>
+          </div>
+          <div class="sun-container flex items-center justify-center md:justify-end gap-15 md:gap-8">
+            <img src="./assets/images/icon-sunny.webp" alt="sun" class="w-32 weather-icon">
+            <p class="text-7xl temp celsius">20 <span class="degree text-xl absolute"><b>o</b></span></p>
+          </div>
+          </div>
+        </div>
+        <!-- Temperatures -->
+        <div class="inner-forecast grid grid-cols-2 lg:flex mt-3 gap-4 lg:gap-8 w-full">
+            <div class="degree  px-6 py-3 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)]">
+              <h5 class="text-[hsl(250,6%,70%)]">Feels like</h5>
+              <p class="apparent-temp mt-2 text-xl text-[hsl(0,0%,100%)]">18 <span class="degree text-sm absolute">o</span></p>
+            </div>
+            <div class="percentage px-6 py-3 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)]">
+              <h5 class="text-[hsl(250,6%,70%)]">Humidity</h5>
+              <p class="humidity mt-2 text-xl text-[hsl(0,0%,100%)]">46%</p>
+            </div>
+            <div class="wind px-6 py-3 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)]">
+              <h5 class="text-[hsl(250,6%,70%)]">wind</h5>
+              <p class="mt-2 text-xl text-[hsl(0,0%,100%)] wind-number">14 km/h</p>
+            </div>
+            <div class="precipitation px-6 py-3 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)]">
+              <h5 class="text-[hsl(250,6%,70%)]">Precipitation</h5>
+              <p class="mt-2 text-xl text-[hsl(0,0%,100%)]">0 mm</p>
+            </div>
+        </div>
+        <!-- daily forecast box -->
+         <div class="forecast-container mt-5 p-1 md:p-0 lg:mb-10">
+            <h2 class="mb-4 pl-1">Daily Forecast</h2>
+            <div class="daily-forecast grid grid-cols-3 lg:flex lg:gap-4 gap-5">
+              <div class="tuesday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Tue</h5>
+                <img src="./assets/images/icon-rain.webp" alt="icon-rain" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius ">20<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)] ">14<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="wednsesday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Wed</h5>
+                <img src="./assets/images/icon-drizzle.webp" alt="icon-drizzle" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius">21<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)] ">15<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="thursday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Thu</h5>
+                <img src="./assets/images/icon-sunny.webp" alt="icon-sunny" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius">24<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)]">14<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="friday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Fri</h5>
+                <img src="./assets/images/icon-partly-cloudy.webp" alt="icon-partly-cloudy" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius ">25<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)]">13<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="saturday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Sat</h5>
+                <img src="./assets/images/icon-storm.webp" alt="icon-storm" class="w-12">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius">21<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)]">15<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="sunday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Sun</h5>
+                <img src="./assets/images/icon-snow.webp" alt="icon-snow" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius ">25<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)]">16<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+              <div class="monday lg:w-19 p-2 bg-[hsl(243,23%,24%)] rounded-xl ring-2 ring-[hsl(243,23%,30%)] flex flex-col items-center gap-2">
+                <h5>Mon</h5>
+                <img src="./assets/images/icon-fog.webp" alt="icon-fog" class="w-12 day-icon">
+                <div class="flex justify-between gap-8 md:gap-5">
+                  <p class="high-temp celsius ">24<span class="text-sm absolute">o</span></p>
+                  <p class="low-temp celsius text-[hsl(250,6%,70%)] ">15<span class="text-sm absolute">o</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+      <!-- Hourly forecast section -->
+      <section class="hour mt-8 md:mt-5 lg:mt-0 bg-[hsl(243,23%,24%)] rounded-3xl p-4 md:p-5 w-full lg:w-83 mb-4 lg:mb-0">
+        <div class="hour-header flex justify-between items-center">
+          <h2>Hourly forecast</h2>
+          <button class="days-btn bg-[hsl(243,23%,30%)] rounded-3xl w-fit px-3 py-2 flex justify-center items-center gap-2 rounded-lg text-sm hover:cursor-pointer">
+             <span class="day-label">Tuesday</span> 
+             <img src="./assets/images/icon-dropdown.svg" alt="dropdown">
+          </button>
+          <ul class="w-48 absolute top-[90rem] lg:top-82 right-7 lg:right-35 bg-[hsl(243,27%,20%)] rounded-lg p-2 day-dropdown flex flex-col gap-3 z-10 hidden">
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Monday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Tuesday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Wednsesday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Thursday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Friday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Saturday</li>
+            <li class="hover:bg-[hsl(243,27%,30%)] hover:rounded-md p-1 ">Sunday</li>
+          </ul>
+        </div>
+          <ul class="mt-4 flex flex-col justify-center gap-5 lg:gap-4">
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-overcast.webp" alt="icon-overcast" class="w-12">
+                <p class="hour-time">3 PM</p>
+              </div>
+              <p class="hour-max celsius">20<span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-partly-cloudy.webp" alt="icon-partly-cloudy" class="w-12">
+                <p class="hour-time">4 PM</p>
+              </div>
+              <p class="hour-max celsius">20<span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-sunny.webp" alt="icon-sunny" class="w-12">
+                <p class="hour-time">5PM</p>
+              </div>
+              <p class="hour-max celsius">20 <span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-overcast.webp" alt="icon-overcast" class="w-12">
+                <p class="hour-time">6PM</p>
+              </div>
+              <p class="hour-max celsius">19 <span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-drizzle.webp" alt="icon-drizzle" class="w-12">
+                <p class="hour-time ">7PM</p>
+              </div>
+              <p class="hour-max celsius">18 <span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-fog.webp" alt="icon-fog" class="w-12">
+                <p class="hour-time">8PM</p>
+              </div>
+              <p class="hour-max celsius">18 <span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-drizzle.webp" alt="icon-drizzle" class="w-12">
+                <p class="hour-time">9PM</p>
+              </div>
+              <p class="hour-max celsius">17 <span class="text-sm absolute">o</span></p>
+            </li>
+            <li class="bg-[hsl(243,23%,26%)] p-2 md:p-0 rounded-lg ring-2 ring-[hsl(243,23%,30%)] flex justify-center gap-41 md:gap-37 items-center">
+              <div class="flex items-center justify-center gap-1">
+                <img src="./assets/images/icon-overcast.webp" alt="icon-overcast" class="w-12">
+                <p class="hour-time">10PM</p>
+              </div>
+              <p class="hour-max celsius">17 <span class="text-sm absolute">o</span></p>
+            </li>
+          </ul>
+       </section>
+    </main>go
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

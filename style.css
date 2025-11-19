@@ -1,0 +1,38 @@
+@font-face {
+    font-family: BricolageGrotesque;
+    src: url(./assets/fonts/Bricolage_Grotesque/BricolageGrotesque-VariableFont_opsz\,wdth\,wght.ttf);
+}
+@font-face {
+    font-family: DMSans;
+    src: url(./assets/fonts/DM_Sans/);
+}
+body {
+    font-family: BricolageGrotesque;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+h1 {
+    font-family: BricolageGrotesque;
+    font-weight: 700;
+}
+.today-weather > h2 {
+    font-weight: 500;
+}
+.search-box > input::placeholder{
+    padding-left: 1rem;
+}
+.search-box > input:focus{
+    outline: 1px solid hsla(0, 0%, 100%);
+}
+
+/* hover for units dropdown */
+.active-unit {
+  background-color: hsl(243, 27%, 30%);
+  width: 100%;
+  padding: 0.25rem; 
+  border-radius: 0.375rem; 
+  background-image: url('./assets/images/icon-checkmark.svg');
+  background-repeat: no-repeat;
+  background-position: center left 11rem;
+}
+
